@@ -1,0 +1,36 @@
+<!-- Apex 의 변수를 사용하기 위해 해당 Apex 클래스를 "controller" 속성을 지정 -->
+<apex:page controller="CntrlVfCallJs" sidebar="false">
+    <script type = "text/javascript">
+    
+        function callApexVarMethod() {
+        
+            // Visualforce 에 지정한 Apex 변수를 javascript 내에서 습득
+            // (apex:inputHidden 에 지정한 id 속성으로 대상을 지정)
+            var myVar = document.getElementById('{!$Component.form.myVar}').value;
+            
+            // 역으로 Apex 변수의 내용을 변경하는 것도 가능
+            // var myVar = document.getElementById('{!$Component.form.myVar}').value = 'Bye World';
+            
+            // Apex 메서드 실행(apex:actionFunction 에 지정한 name 속성으로 대상을 지정)
+            myMthd();
+            
+        } // callApexVarMethod()
+        
+    </script>
+    
+    <apex:form id="form">
+        <!-- 화면 메시지 표시란 -->
+        <apex:pageMessages id="messagearea" showDetail="false"/>
+        <!-- Apex 변수 지정 -->
+        <apex:inputHidden id="myVar" value="{!myVariable}"/>
+        <!-- Apex 메서드 지정 -->
+        <apex:actionFunction name="myMthd" action="{!myMethod}"/>
+        
+        <apex:pageBlock title="Apex 변수 및 메서드 호출">
+            <!-- 화면 메시지 표시란 -->
+            <apex:pageMessages id="messagearea" showDetail="false" />
+            
+            <apex:commandButton value="JS 호출" oncomplete="callApexVarMethod()"/>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

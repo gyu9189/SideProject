@@ -1,0 +1,15 @@
+<!-- 화면 전환시에 전달 받은 데이터를 표시하기 위한 페이지 -->
+<apex:page controller="CntrlPageRefB" sidebar="false">
+    <apex:form id="form">
+        <apex:outputText value="[paramStr]: {!paramStr}"/>
+        <br/>
+        <apex:outputText value="[paramInt]: {!paramInt}"/>
+        <br/>
+        <apex:outputText value="[paramDec]: {!paramDec}"/>
+        <br/>
+        <apex:outputText value="[paramBool]: {!paramBool}"/>
+        <br/>
+        <apex:outputText value="[paramBool(checkbox)]: "/>
+        <apex:inputCheckbox value="{!paramBool}"/>
+    </apex:form>
+</apex:page>

@@ -1,0 +1,10 @@
+<apex:page controller="CntrlCsvDownload" cache="true" contentType="text/csv#{!csvFileName};charset=UTF-8">
+    <!-- csv 헤더 (첫번째 행) -->
+    <apex:outputText value="{!csvHeader}"/>
+
+    <!-- csv 본문을 1행씩 출력 -->
+    <!-- apex:repeat : List 를 1개의 요소씩 반복 -->
+    <apex:repeat value="{!csvBodyList}" var="body">
+        <apex:outputText value="{!body}"/>
+    </apex:repeat>
+</apex:page>

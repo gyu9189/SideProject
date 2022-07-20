@@ -1,0 +1,20 @@
+<apex:page >
+    <script type = "text/javascript">
+    
+        function checkConfirm() {
+            
+            if(confirm('javascript 호출 테스트')) {
+                return true;                
+            } // if
+            
+            return false;
+            
+        } // checkConfirm
+        
+    </script>
+    
+    <apex:form id="form">
+        <!-- javascript 호출용 버튼 -->
+        <apex:commandButton value="JS 호출" onclick="if(confirm('javascript 호출 테스트')){return true;}; return false;"/>
+    </apex:form>
+</apex:page>

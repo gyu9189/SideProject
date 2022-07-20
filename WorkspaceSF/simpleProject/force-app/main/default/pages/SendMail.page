@@ -1,0 +1,38 @@
+<apex:page controller="CntrlSendMail" sidebar="false">
+    <apex:form id="form">
+        <apex:pageMessages id="messagearea" showDetail="false"/>
+
+        <apex:pageBlock title="메일 송신">
+            <apex:pageBlockButtons location="bottom">
+                <apex:commandButton value="보내기" action="{!sendMail}"/>
+            </apex:pageBlockButtons>
+
+            <apex:pageBlockSection columns="1" showHeader="true" collapsible="true">
+                <apex:pageBlockSectionItem >
+                    <apex:outputText value="받는 사람"/>
+                    <apex:inputtextArea value="{!mailToAddress}" cols="70" rows="2"/>
+                </apex:pageBlockSectionItem>
+
+                <apex:pageBlockSectionItem >
+                    <apex:outputText value="CC"/>
+                    <apex:inputtextArea value="{!mailCcAddress}" cols="70" rows="2"/>
+                </apex:pageBlockSectionItem>
+
+                <apex:pageBlockSectionItem >
+                    <apex:outputText value="BCC"/>
+                    <apex:inputtextArea id="bccAddrId" value="{!mailBccAddress}" cols="70" rows="2"/>
+                </apex:pageBlockSectionItem>
+
+                <apex:pageBlockSectionItem >
+                    <apex:outputText value="제목"/>
+                    <apex:inputText id="titleId" value="{!mailSubject}" style="width:440px;"/>
+                </apex:pageBlockSectionItem>
+
+                <apex:pageBlockSectionItem >
+                    <apex:outputText value="본문"/>
+                    <apex:inputtextArea id="bodyId" value="{!mailBody}" cols="70" rows="20"/>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

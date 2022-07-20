@@ -1,0 +1,50 @@
+<!-- 변수 사용법 및 화면 전환 테스트용 화면 -->
+<apex:page controller="CntrlPageRefA" sidebar="false">
+
+    <!-- 화면에 표시할 메시지 표지란 -->
+    <apex:pageMessages id="messagearea" showDetail="false"/>
+
+    <apex:form id="form">
+        <!-- 화면 표시용 변수 사용 -->
+        <apex:pageBlock title="화면 표시용">
+            <apex:outputText value="[String]: {!dspStr}"/>
+            <br/>
+            <apex:outputText value="[Integer]: {!dspInt}"/>
+            <br/>
+            <apex:outputText value="[Decimal]: {!dspDec}"/>
+            <br/>
+            <apex:outputText value="[Boolean]: {!dspBool}"/>
+        </apex:pageBlock>
+
+        <!-- 화면 입력용 변수 사용 -->
+        <apex:pageBlock title="화면 입력용">
+            <apex:outputText value="[String]: "/>
+            <apex:inputText value="{!inputStr}"/>
+            <br/>
+            <apex:outputText value="[Integer]: "/>
+            <apex:inputText value="{!inputInt}"/>
+            <br/>
+            <apex:outputText value="[Decimal]: "/>
+            <apex:inputText value="{!inputDec}"/>
+            <br/>
+            <apex:outputText value="[Boolean(CheckBox)]: "/>
+            <apex:inputCheckbox value="{!inputBool}"/>
+            <br/><br/>
+
+            <!-- 입력한 데이터의 값을 화면에 표시하기 위한 버튼 -->
+            <apex:commandButton value="입력 데이터 표시" action="{!dspInputData}"/>
+        </apex:pageBlock>
+        
+        <!-- 화면 전환 -->
+<apex:pageBlock title="화면 전환용">
+    <!-- 컨트롤러의 메서드를 사용할 버튼 -->
+    <!-- URL파라미터 지정형식 : [파라미터명]=[값],[파라미터명]=[값], ...  -->
+    <apex:commandButton value="메서드로 화면전환" action="{!moveToPageRefB}"/>
+
+    <!-- Visualforce 내에서 화면 전환 및 데이터 전달하기위한 버튼 -->
+    <apex:commandButton value="Visualfoce내에서 화면전환" 
+action="{!URLFOR($Page.PageRefB, null, [inputStr=inputStr, inputInt=inputInt, inputDec=inputDec, inputBool=inputBool])}"/>
+</apex:pageBlock>
+
+    </apex:form>
+</apex:page>

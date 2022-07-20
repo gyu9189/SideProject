@@ -1,0 +1,12 @@
+<apex:page >
+  <h1>Sample002 Hello World2</h1>
+  <br/><br/>
+  <apex:outputText value="개발자 콘솔 테스트"/>
+  <br/><br/>
+<!-- 처음에 만든 “이름“의 화면으로 이동하는 링크 
+Sample001HelloWorld를 본인들이 만든 “이름“으로 변경하세요.
+-->
+  <apex:outputLink value="{!URLFOR($Page.HelloWord)}">
+      <apex:outputText value="Browser에서 최초로만든 Visualforce페이지에 이동"/>
+  </apex:outputLink>
+</apex:page>

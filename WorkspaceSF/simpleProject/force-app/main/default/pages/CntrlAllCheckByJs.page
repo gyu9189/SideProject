@@ -1,0 +1,60 @@
+<apex:page controller="CntrlAllCheckByJs" sidebar="false">
+    <script type="text/javascript">
+        /**
+         * @description 체크 박스의 전체 선택/해제
+         * 수정 TEST
+         */
+        function checkAll(cb,cbid) {
+            var inputElem = document.getElementsByTagName("input");
+
+            for (var i =0 ; i < inputElem.length; i++) {
+                if(inputElem[i].id.indexOf(cbid) != -1){
+                    inputElem[i].checked = cb.checked;
+                }
+            }
+        }
+
+        /**
+         * @description "선택" 링크로 선택한 회원 정보 습득
+         */
+        function selectMember(mName) {
+            document.getElementById('{!$Component.form.selMemName}').value = mName;
+
+            getMemNameByLink();
+        }
+    </script>
+
+    <apex:form id="form">
+        <apex:pageMessages id="messagearea" showDetail="false"/>
+
+        <apex:inputHidden id="selMemName" value="{!selMemberName}"/>
+
+        <apex:actionFunction name="getMemNameByLink" action="{!getMemberNameByLink}"/>
+
+        <apex:pageBlock title="체크박스 전체 선택/해제">
+
+            <apex:pageBlockButtons location="top">
+                <apex:commandButton id="btnGetSelItems" value="선택" action="{!getSelectedItem}"/>
+            </apex:pageBlockButtons>
+
+            <!-- 리스트를 표 형식으로 출력 -->
+            <apex:pageBlockTable value="{!memWrapperList}" var="member" style="width:15%;">
+                <apex:column style="width:3%;">
+                    <apex:facet name="header">선택</apex:facet>
+                    <apex:commandLink id="selectLink" value="선택" onclick="selectMember('{!member.memName}');"/>
+                </apex:column>
+
+                <apex:column style="width:2%; text-align:center;">
+                    <!-- 헤더 부분에 체크박스 추가 -->
+                    <apex:facet name="header">
+                        <apex:inputCheckbox id="checkAll" onclick="checkAll(this, 'selectRow')"/>
+                    </apex:facet>
+                    <!-- 데이터 부분에 체크박스 추가 -->
+                    <apex:inputCheckbox id="selectRow" value="{!member.isSelected}"/>
+                </apex:column>
+
+                <apex:column value="{!member.memName}" headerValue="회원 이름" style="width:10%;"/>
+            </apex:pageBlockTable>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>
