@@ -61,9 +61,9 @@ trigger Video_SideProject_Trigger on Video__c (before delete
         
         for(Video__c v : Trigger.old) {
             if(v.IsLent__c == true) {
-                v.IsLent__c.addError('이미 대여중인 비디오 입니다.');
+                v.addError('이미 대여중인 비디오 입니다.'); // ******09-11******* 왜 해당Error가 출력이 안될까 ? 
                 return;
-            } // if            
+            } // if
         } // for
 
         Customer__c customer = new Customer__c();
@@ -76,13 +76,8 @@ trigger Video_SideProject_Trigger on Video__c (before delete
             for(Customer__c c : [SELECT LentalCount__c FROM Customer__c WHERE Id = :v.Customer__c]){
 
                 customer.IsLental__c = true;
-                System.debug('customer.IsLental__c');
-                System.debug(customer.IsLental__c);
                 customer.Id = v.Customer__c;
-                System.debug('customer.Id');
-                System.debug(customer.Id);
                 customer.LentalVideo__c = v.Id;
-
                 if(c.LentalCount__c == null) {
                     customer.LentalCount__c = 1;
                 } else {
