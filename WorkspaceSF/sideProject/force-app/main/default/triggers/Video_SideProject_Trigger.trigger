@@ -55,13 +55,13 @@ trigger Video_SideProject_Trigger on Video__c (before delete
     // 대여수 : LentalCount__c
 
     // Update Trigger Start //
-
+    
     // 2. 비디오 대여시 해당 비디오 대여상태, 대여자 이름 표시 대여중일시 '이미 대여중인 비디오' error 문구 출력
     private static void videoLentCheck(){
         
         for(Video__c v : Trigger.old) {
             if(v.IsLent__c == true) {
-                v.addError('이미 대여중인 비디오 입니다.'); // ******09-11******* 왜 해당Error가 출력이 안될까 ? 
+                v.addError('이미 대여중인 비디오 입니다.'); // 왜 해당Error가 출력이 안될까 ? 
                 return;
             } // if
         } // for
@@ -74,7 +74,7 @@ trigger Video_SideProject_Trigger on Video__c (before delete
             v.LentDate__c = Date.Today();
 
             for(Customer__c c : [SELECT LentalCount__c FROM Customer__c WHERE Id = :v.Customer__c]){
-
+                
                 customer.IsLental__c = true;
                 customer.Id = v.Customer__c;
                 customer.LentalVideo__c = v.Id;

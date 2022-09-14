@@ -8,11 +8,11 @@ trigger Customer_SideProject_Trigger on Customer__c (before delete
     switch on Trigger.OperationType  {
         when BEFORE_INSERT
         {
-
+            phoneOverlapCheck();
         }
         when BEFORE_UPDATE
         {
-            CustomerLentCheck();
+            // CustomerLentCheck();
         }
         when BEFORE_DELETE
         {
@@ -56,12 +56,12 @@ trigger Customer_SideProject_Trigger on Customer__c (before delete
 
     // 3. 회원에서 비디오 대여시에도 비디오에 대여자, 대여일자, 대여상태 회원에 비디오 이름, 대여상태, 대여비디오 수 Update
     //    & 이미 대여중인 비디오일시 "이미 대여중인 비디오 입니다." 출력
-    private static void CustomerLentCheck(){
-
-        Video__c updateVideo = new Video__c();
+    /* private static void CustomerLentCheck(){
+       
+       Video__c updateVideo = new Video__c();
 
         for(Customer__c customer : Trigger.new) {
-            for(Video__c video : [SELECT IsLent__c FROM Video__c WHERE Id = :customer.LentalVideo__c]){
+            for(Video__c video : [SELECT Id, IsLent__c FROM Video__c WHERE Id = :customer.LentalVideo__c]){
                 if(video.IsLent__c == true) {
                     customer.addError('이미 대여중인 비디오 입니다.');
                     return;
@@ -74,7 +74,6 @@ trigger Customer_SideProject_Trigger on Customer__c (before delete
                     customer.LentalCount__c++;
                 } // else
                 updateVideo.Id = customer.LentalVideo__c;
-                updateVideo.Customer__c = customer.Id;
                 updateVideo.IsLent__c = true;
                 updateVideo.LentDate__c = Date.Today();
             } // inner for (SELECT IsLent__c)
@@ -84,6 +83,15 @@ trigger Customer_SideProject_Trigger on Customer__c (before delete
 
         update updateVideo;
 
-    } // CustomerLentCheck()
+    } // CustomerLentCheck() */
 
-}
+    private static void phoneOverlapCheck(){
+        for(Customer__c customer : Trigger.new) {
+            List<Customer__c> c = [SELECT Phone_Number__c FROM Customer__c WHERE Phone_Number__c = :customer.Phone_Number__c];
+            if(c.size() > 0) {
+                customer.addError('중복되는 휴대폰 번호 입니다.');
+            } // if
+        } // for
+    } // phoneOverlapCheck()
+
+} 
