@@ -20,7 +20,7 @@ export default class MemberLWC extends NavigationMixin(LightningElement) {
         { label: '대여수', fieldName: 'LentalCount__c', type: 'number'},
         { type: 'action', typeAttributes: { rowActions: actions } }
     ];
-
+    
     @api recordId;
     @api errorMessage;    
     @api selectedRecords = [];

@@ -3,6 +3,7 @@ import { LightningElement, api, track, wire } from 'lwc';
 // Apex
 import getVideoList from '@salesforce/apex/VideoController.getVideoList';
 import delVideoRecords from '@salesforce/apex/VideoController.delVideoRecords';
+import getSearchList from '@salesforce/apex/VideoController.getSearchList';
 import { getSObjectValue } from '@salesforce/apex';
 // Schema
 import VIDEO_OBJECT from '@salesforce/schema/Video__c';
@@ -39,11 +40,26 @@ export default class SideProject extends NavigationMixin(LightningElement) {
     ];
 
     @track data; // list에 띄울 레코드를 담을 변수
+    @track searchData; // 검색 결과를 담을 list
+    @track searchStr; // 검색 value
     @track isShowModal = false; // modal switch
+    @track searchTitle;
+    @track search = [
+        {
+            id: 'menu-item-1',
+            label: '제목',
+            value: 'Name'
+        },
+        {
+            id: 'menu-item-2',
+            label: '장르',
+            value: 'Video_Genre__c'
+        }
+    ];
 
     @wire(getVideoList)
-    wireData({ error, data }){        
-        if(data) {            
+    wireData({ error, data }){
+        if(data) {
             this.data = data.map( result => Object.assign(
                 {'Customer__r.Name' : result.Customer__c != undefined ? result.Customer__r.Name : ''},
                 result
@@ -137,17 +153,41 @@ export default class SideProject extends NavigationMixin(LightningElement) {
         } catch (error) {
             console.log(error);
         }
-    }
+    } // handleRowActions()
 
-    showModalBox() {  
+    handleSearchTitle(event) {
+        console.log('handleearchTitle Join!!! ');
+        this.searchTitle = event.detail.value;
+        
+        console.log(this.searchTitle);
+    } // handleSearchTitle()
+    // 22-09-16
+    handleSearch(event){
+        var valTemp;
+        valTemp = event.detail.value;
+        this.searchStr = valTemp;
+
+        console.log('searchStr !!! ');
+        console.log(this.searchStr);
+
+        var temp;
+        temp = getSearchList({searchTitle: this.searchTitle}, {searchStr: this.searchStr});
+        this.searchData = temp;
+
+        console.log('searchData!!! ');
+        console.log(this.searchData);
+        
+    } // handleSearch(event)
+
+    showModalBox() {
         this.isShowModal = true;
         console.log('modal open');
         console.log(this.isShowModal);
-    }
+    } // showModalBox()
 
-    hideModalBox() {  
+    hideModalBox() {
         this.isShowModal = false;
         console.log('modal Close');
         console.log(this.isShowModal);
-    }
+    } // hideModalBox()
 }
