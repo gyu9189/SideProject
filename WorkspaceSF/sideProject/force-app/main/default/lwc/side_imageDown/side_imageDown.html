@@ -1,0 +1,34 @@
+<template>
+    <div class="content-type-var">
+        <div class="content-type" onclick={contentTypeHandle}>
+            <p>센과 치히로</p>
+        </div>
+        <div class="content-type" onclick={contentTypeHandle}>
+            <p>포뇨</p>
+        </div>
+    </div>
+    <template if:true={pagingSwitch}>
+        <template if:true={imageData}>
+            <div class="content-card">
+                <template iterator:it={imageData}>
+                    <div class="image-box" key={it.value.Id} data-id={it.value.Id} onclick={handleChecked}>
+                        <img class="down-target-img" src={it.value.ImageUrl__c} />
+                    </div>
+                </template>
+            </div>
+        </template>
+    </template>
+    <div style="height: 10px;"></div>
+    <ul id="pagingul">
+        <lightning-button class="first-Page-bttn" label="&lt;&lt;" value="&lt;&lt;" onclick={pageAreaMove}></lightning-button>
+        <lightning-button class="previous-page-bttn" label="&lt;" value="&lt;" onclick={pageAreaMove}></lightning-button>
+        <template if:true={pagebutton}>
+            <template iterator:it={pageArr}>
+                <lightning-button key={it.value.No} label={it.value.No} value={it.value.No} onclick={onPagination}>
+                </lightning-button>
+            </template>
+        </template>
+        <lightning-button class="next-page-bttn" label="&gt;" value="&gt;" onclick={pageAreaMove}></lightning-button>
+        <lightning-button class="end-page-bttn" label="&gt;&gt;" value="&gt;&gt;" onclick={pageAreaMove}></lightning-button>
+    </ul>
+</template>

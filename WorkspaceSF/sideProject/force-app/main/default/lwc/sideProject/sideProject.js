@@ -4,6 +4,8 @@ import { LightningElement, api, track, wire } from 'lwc';
 import getVideoList from '@salesforce/apex/VideoController.getVideoList';
 import delVideoRecords from '@salesforce/apex/VideoController.delVideoRecords';
 import getSearchList from '@salesforce/apex/VideoController.getSearchList';
+import getDataExportToExcel from '@salesforce/apex/VideoController.getDataExportToExcel'; 
+import getAccountDataToExport from '@salesforce/apex/VideoController.getAccountDataToExport';
 import { getSObjectValue } from '@salesforce/apex';
 // Schema
 import VIDEO_OBJECT from '@salesforce/schema/Video__c';
@@ -22,7 +24,6 @@ import { NavigationMixin } from 'lightning/navigation';
 const actions = [{ label: 'View', name: 'view' }, { label: 'Update', name: 'edit' }];
 export default class SideProject extends NavigationMixin(LightningElement) {
     
-    
     @api recordId;
     @api errorMessage;    
     @api selectedRecords = [];
@@ -40,10 +41,12 @@ export default class SideProject extends NavigationMixin(LightningElement) {
     ];
 
     @track data; // list에 띄울 레코드를 담을 변수
+    @track dataTemp; // 서브 데이터
     @track searchData; // 검색 결과를 담을 list
     @track searchStr; // 검색 value
     @track isShowModal = false; // modal switch
     @track searchTitle;
+    @track title;
     @track search = [
         {
             id: 'menu-item-1',
@@ -56,6 +59,27 @@ export default class SideProject extends NavigationMixin(LightningElement) {
             value: 'Video_Genre__c'
         }
     ];
+    @track exportData = {};
+
+    
+    columnHeader = ['VideoNo__c', 'Name', 'Video_Genre__c', 'IsLent__c', 'Customer__c', 'LentDate__c' ]; // Export To Excel Header
+    
+    connectedCallback(){
+        getDataExportToExcel()
+        .then((result) => {
+            console.log('result !!! ');
+            console.log(result);
+            if(result != null) {
+                this.exportData = result.map(temp => Object.assign(
+                    {'Customer__r.Name' : temp.Customer__c != undefined ? temp.Customer__r.Name : ''}, temp
+                ));
+            } // if
+        })
+        .catch(error => {
+            console.log('Error!!!!');
+            console.log(error);
+        }); // catch
+    }
 
     @wire(getVideoList)
     wireData({ error, data }){
@@ -64,6 +88,7 @@ export default class SideProject extends NavigationMixin(LightningElement) {
                 {'Customer__r.Name' : result.Customer__c != undefined ? result.Customer__r.Name : ''},
                 result
             ));
+            this.dataTemp = this.data;
             this.error = undefined;
             console.log('data~!');
             console.log(data);
@@ -110,7 +135,8 @@ export default class SideProject extends NavigationMixin(LightningElement) {
                 })
             );
         });
-    }
+    }// hendleDelete()
+
     getSelectedId(event){
         this.selectedRecords = [];
         const selectedRows = event.detail.selectedRows;
@@ -121,7 +147,7 @@ export default class SideProject extends NavigationMixin(LightningElement) {
         } catch (error) {
             console.log(error);
         }
-    }
+    } // getSelectedId(event)
 
     handleRowActions(event) {
         try {
@@ -160,24 +186,92 @@ export default class SideProject extends NavigationMixin(LightningElement) {
         this.searchTitle = event.detail.value;
         
         console.log(this.searchTitle);
+        if(this.searchTitle == 'Name') {
+            this.title = '비디오 이름';
+        } else if(this.searchTitle == 'Video_Genre__c') {
+            this.title = '비디오 장르';
+        }
     } // handleSearchTitle()
-    // 22-09-16
+    
     handleSearch(event){
-        var valTemp;
-        valTemp = event.detail.value;
-        this.searchStr = valTemp;
+        var valTemp = event.detail.value;
+        if(valTemp == '' || valTemp == undefined) {
+            console.log('if (undefine) ');
+            this.data = this.dataTemp;
+        } else {
+            console.log('searchStr !!! ');
+            console.log(valTemp);
+    
+            var map =
+                {'searchTitle' : this.searchTitle, 'searchStr' : valTemp};
 
-        console.log('searchStr !!! ');
-        console.log(this.searchStr);
+                getSearchList({strMap : map})
+                .then((result) => {
+                    console.log('result !!! ');
+                    console.log(result);
+                    if(result != null) {
+                        this.data = result.map(temp => Object.assign(
+                            {'Customer__r.Name' : temp.Customer__c != undefined ? temp.Customer__r.Name : ''}, temp
+                        ));
+                    } // if
+                })
+                .catch(error => {
+                    console.log('handleSearch error catch !!! ');
+                    console.log(error);
+                });
+        } // else
 
-        var temp;
-        temp = getSearchList({searchTitle: this.searchTitle}, {searchStr: this.searchStr});
-        this.searchData = temp;
-
-        console.log('searchData!!! ');
-        console.log(this.searchData);
-        
     } // handleSearch(event)
+
+
+    aaa(){
+        console.log('It s in ExportData !!!');
+        console.log('DataList !!! ');
+        console.log(this.exportData);
+
+         // Prepare a html table
+         let doc = '<table>';
+         // Add styles for the table
+         doc += '<style>';
+         doc += 'table, th, td {';
+         doc += '    border: 1px solid black;';
+         doc += '    border-collapse: collapse;';
+         doc += '}';          
+         doc += '</style>';
+         // Add all the Table Headers
+         doc += '<tr>';
+         this.columnHeader.forEach(element => {            
+             doc += '<th>'+ element +'</th>'           
+         });
+         doc += '</tr>';
+         console.log('</tr> end doc');
+         console.log(doc);
+         // Add the data rows
+         console.log('exportData !!! ');
+         console.log(this.exportData);
+         this.exportData.forEach(record => {
+             doc += '<tr>';
+             doc += '<th>'+record.Id+'</th>';
+             doc += '<th>'+record.Name+'</th>';
+             doc += '<th>'+record.Video_Gnere__c+'</th>';
+             doc += '<th>'+record.isLent__C+'</th>';
+             doc += '<th>'+record.Customer__r.Name+'</th>';
+            //  doc += '<th>'+record.LentDate__c+'</th>';
+             doc += '</tr>';
+         });
+         doc += '</table>';
+         console.log('doc!!');
+         console.log(doc);
+         var element = 'data:application/vnd.ms-excel,' + encodeURIComponent(doc);
+         let downloadElement = document.createElement('a');
+         downloadElement.href = element;
+         downloadElement.target = '_self';
+         // use .csv as extension on below line if you want to export data as csv
+         downloadElement.download = 'exex.xls';
+         document.body.appendChild(downloadElement);
+         downloadElement.click();
+        
+    } // exportData()
 
     showModalBox() {
         this.isShowModal = true;
@@ -190,4 +284,11 @@ export default class SideProject extends NavigationMixin(LightningElement) {
         console.log('modal Close');
         console.log(this.isShowModal);
     } // hideModalBox()
+
+
+
+
+
+
+
 }

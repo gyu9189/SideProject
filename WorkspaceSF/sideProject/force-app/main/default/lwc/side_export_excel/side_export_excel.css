@@ -1,0 +1,29 @@
+.content-card + .content-card {
+    border-top: 1px solid #DDDDDD;
+    height: 1500px;
+    width: 950px;   
+}
+
+.object-choice {
+    overflow: scroll;
+    background-color: #ece7e9;
+    height: 200px;
+    width: 1100px;
+}
+
+.field-choice {
+    overflow: scroll;
+    background-color: #ece7e9;
+    height: 200px;
+    width: 1100px;
+}
+
+.object-checkbox{
+    display: inline-block;
+    width: 260px;
+}
+
+.field-checkbox{
+    display: inline-block;
+    width: 260px;
+}

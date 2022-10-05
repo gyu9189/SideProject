@@ -3,7 +3,8 @@
          <!-- <div class="slds-m-top_medium slds-m-bottom_x-large"> -->
             <div class="slds-p-around_medium lgc-bg">
                 <h2> ⇊검색 필터</h2>
-                <lightning-button-menu alternative-text="Action" onselect={handleSearchTitle}>
+                <!-- Drop Menu start -->
+                <lightning-button-menu alternative-text="Action" onselect={handleSearchTitle} style="display:inline-block">
                     <template for:each={search} for:item="action">
                         <lightning-menu-item
                             id="action-id"
@@ -14,14 +15,18 @@
                         </lightning-menu-item>
                     </template>
                 </lightning-button-menu>
+                <!-- Drop meny end -->
+                <template if:true={title}>
+                    <lightning-input type="text" value={title} read-only style="display:inline-block"></lightning-input>
+                </template>
                 <lightning-input type="search" label="Search" onchange={handleSearch} placeholder="Search here..." is-loading></lightning-input>
             </div>
         <!-- </div> -->
-        
-        <lightning-button label="NEW" onclick={showModalBox}></lightning-button>
-        <lightning-button label="DELETE" onclick={handleDelete}></lightning-button>
+        <lightning-button label="NEW" title="new create record" onclick={showModalBox}></lightning-button>
+        <lightning-button label="DELETE" title="delete record" onclick={handleDelete}></lightning-button>
         <div class="slds-p-bottom_large slds-p-left_large" style="height: 300px">
-            <template if:true={data}><!--  -->
+            <lightning-button label="Excel" title="export data" variant="brand" onclick={aaa}></lightning-button>
+            <template if:true={data}>
                 <lightning-datatable key-field="id"
                                      columns={columns}
                                      data={data}

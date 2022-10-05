@@ -1,0 +1,28 @@
+<template>
+    <div class="content-card">
+        <div>
+            <h2>Object</h2>
+        </div>
+        <div class="object-choice">
+            <template if:true={object}>
+                <template iterator:it={object}>
+                    <div class="object-checkbox" key={it.value} data-name={it.value}>
+                        <input class="object-input" type="checkbox" data-name={it.value} onclick={checkedHandle}>{it.value}
+                    </div>
+                </template>
+            </template>
+        </div>
+        <div>
+            <h2>Field</h2>
+        </div>
+        <div class="field-choice">
+            <template iterator:it={field}>
+                <div class="field-checkbox" key={it.value} data-name={it.value}>
+                    <input class="field-input" type="checkbox" data-name={it.value} onclick={usingFieldSet}>{it.value}
+                </div>
+            </template>
+        </div>
+        <lightning-button label="Export data" title="Export Test Data" onclick={getExportData}></lightning-button>
+    </div>
+    
+</template>
