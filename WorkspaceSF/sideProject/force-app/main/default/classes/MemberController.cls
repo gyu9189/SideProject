@@ -9,7 +9,7 @@ public with sharing class MemberController {
                     IsLental__c,
                     LentalVideo__r.Name,
                     LentalCount__c
-                FROM 
+                FROM
                     Customer__c
                 ORDER BY Customer_Number__c ASC];
     } // getCustomerList()
