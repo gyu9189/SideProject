@@ -13,7 +13,7 @@ public with sharing class MemberController {
                     Customer__c
                 ORDER BY Customer_Number__c ASC];
     } // getCustomerList()
-
+    
     @AuraEnabled
     public static List<Customer__c> delCustomerRecords(List<String> cList) {
         System.debug('cList!!!');

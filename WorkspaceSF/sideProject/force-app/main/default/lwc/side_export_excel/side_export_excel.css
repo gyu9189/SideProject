@@ -14,16 +14,59 @@
 .field-choice {
     overflow: scroll;
     background-color: #ece7e9;
-    height: 200px;
+    height: 150px;
     width: 1100px;
 }
 
-.object-checkbox{
+.where-choice {
+    overflow: scroll;
+    background-color: #ece7e9;
+    height: 100px;
+    width: 1100px;
+}
+
+.object-checkbox {
     display: inline-block;
     width: 260px;
 }
 
-.field-checkbox{
+.field-checkbox {
     display: inline-block;
     width: 260px;
+}
+.where-box {
+    display:inline-block;
+    width: 1300px;
+    margin: 0%;
+}
+.where-div {
+    display:inline-block;
+    width: 455px;
+    margin: 0%;
+}
+
+.where-field {
+    display: inline-block;
+    width: 150px;
+    height: 20px;
+    margin: 3px;
+}
+
+.where-operator {
+    display: inline-block;
+}
+
+.where-value {
+    display: inline-block;
+    width: 150px;
+    height: 20px;
+    margin: 3px;
+}
+
+.where-Logical-operator {
+    display: inline-block;
+    visibility: hidden;
+    width: 150px;
+    height: 20px;
+    margin: 3px;
 }

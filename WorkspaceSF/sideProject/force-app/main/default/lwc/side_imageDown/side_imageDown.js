@@ -31,7 +31,6 @@ export default class Side_imageDown extends NavigationMixin(LightningElement) {
     buttonLimit;        // PageBttn Limit
     pageCnt             // 전체 Area 수
 
-
     connectedCallback(){
         this.checkedImageId = [];
         getDefaultImageList({type : this.type})
@@ -83,7 +82,7 @@ export default class Side_imageDown extends NavigationMixin(LightningElement) {
             console.log('error ::: ' + JSON.stringify(error));
         } // try / catch
     }
-
+    
     // 이미지 주제 클릭시
     contentTypeHandle(e){
         let title = e.target.textContent;

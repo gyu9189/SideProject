@@ -140,15 +140,16 @@ export default class SideProject extends NavigationMixin(LightningElement) {
     getSelectedId(event){
         this.selectedRecords = [];
         const selectedRows = event.detail.selectedRows;
+        console.log(event.detail.selectedRows);
         try {
             for(let i = 0; i < selectedRows.length; i++) {
                 this.selectedRecords.push(selectedRows[i].Id);
-            } // for             
+            } // for
         } catch (error) {
             console.log(error);
         }
     } // getSelectedId(event)
-
+    
     handleRowActions(event) {
         try {
             const actionName = event.detail.action.name;

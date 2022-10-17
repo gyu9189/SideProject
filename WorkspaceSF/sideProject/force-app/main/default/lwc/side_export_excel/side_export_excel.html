@@ -22,7 +22,70 @@
                 </div>
             </template>
         </div>
+        <div>
+            <h2>where</h2>
+        </div>
+        <div class="where-choice">
+            <template if:true={isWhereBoxSwitch}>
+                <template iterator:idx={whereSet}>
+                    <div class="where-box" key={idx.value.index}>
+                        <div class="where-div" data-idx={idx.value.index}>{idx.value.index}.                        
+                            <input class="where-active" type="checkbox" data-id={idx.value.index} onclick={whereDataSet}>
+                            <select class="where-field" title="필드" data-id={idx.value.index} onchange={whereDataSet}>
+                                <option value='None'>None</option>
+                                <template iterator:it={field}>
+                                    <option key={it.value} value={it.value}>{it.value}</option>
+                                </template>
+                            </select>
+                            <select class="where-operator" title="연산자" data-id={idx.value.index} onchange={whereDataSet}>
+                                <template iterator:it={operList}>
+                                    <option key={it.value} value={it.value}>{it.value}</option>
+                                </template>
+                            </select>
+                            <!-- input vlaue start -->
+                            <template if:true={isDefault}>
+                                <input class="where-value" value="" type="text" data-id={idx.value.index} onchange={whereDataSet} placeholder="필드를 선택해주세요." readonly>
+                            </template>
+                            <template if:true={isText}>
+                                <input class="where-value" value="" type="text" data-id={idx.value.index} onchange={whereDataSet}>
+                            </template>
+                            <template if:true={isDate}>
+                                <input class="where-value" value="" type="date" data-id={idx.value.index} onchange={whereDataSet}>
+                            </template>
+                            <template if:true={isDatetimeLocal}>
+                                <input class="where-value" value="" type="datetime-local" data-id={idx.value.index} onchange={whereDataSet}>
+                            </template>
+                            <template if:true={isNumber}>
+                                <input class="where-value" value="" type="number" data-id={idx.value.index} onchange={whereDataSet} >
+                            </template>
+                            <template if:true={isBool}>
+                                <select class="where-value" title="필드" data-id={idx.value.index} onchange={whereDataSet}>
+                                    <option key={it.value} value="true">true</option>
+                                    <option key={it.value} value="false">false</option>
+                                </select>
+                            </template>
+                            <template if:true={isPickList}>
+                                <select class="where-value" title="필드" data-id={idx.value.index} onchange={whereDataSet}>
+                                    <template iterator:it={pickList}>
+                                        <option key={it.value} value={it.value}>{it.value}</option>
+                                    </template>
+                                </select>
+                            </template>
+                            <!-- input value end -->
+                        </div>
+                            <select class="where-Logical-operator" title="필드" value={idx.value.index} data-no={idx.value.index} onchange={whereDataSet}>
+                                <template iterator:it={operatorList}>
+                                    <option key={it.value} value={it.value}>{it.value}</option>
+                                </template>
+                            </select>
+                    </div>
+                    
+                </template>
+                <lightning-button class="addBox" label="+(add one)" title="add where box" onclick={addWhereBox}></lightning-button>
+                <lightning-button class="delBox" label="-(del one)" title="add where box" onclick={addWhereBox}></lightning-button>
+            </template>
+        </div>
+        
         <lightning-button label="Export data" title="Export Test Data" onclick={getExportData}></lightning-button>
     </div>
-    
 </template>
